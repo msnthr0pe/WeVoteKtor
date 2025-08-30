@@ -5,6 +5,7 @@ import com.users.configureUpdateUserRouting
 import com.login.configureLoginRouting
 import com.register.configureRegisterRouting
 import com.surveys.configureSurveyRouting
+import com.usersSurveys.configureUsersSurveysRouting
 import io.ktor.server.application.*
 import io.ktor.server.cio.*
 import io.ktor.server.engine.*
@@ -27,6 +28,8 @@ fun Application.module() {
     configureUpdateUserRouting()
 
     configureSurveyRouting()
+
+    configureUsersSurveysRouting()
 
     configureSerialization()
 }

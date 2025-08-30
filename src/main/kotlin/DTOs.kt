@@ -26,12 +26,37 @@ data class TitleDTO (
 )
 
 @Serializable
-class SurveyDTOWithId (
+data class SurveyDTOWithId (
     val id: Int,
     val title: String,
     val firstChoice: String,
     val secondChoice: String,
     val thirdChoice: String,
+)
+@Serializable
+data class EmailRequest(val email: String)
+@Serializable
+data class SurveyIdRequest(val id: Int)
+
+@Serializable
+data class SurveysByUserResponse(
+    val email: String,
+    val surveys: List<Int>,
+    val count: Int
+)
+
+@Serializable
+data class UsersBySurveyResponse(
+    val id: Int,
+    val emails: List<String>,
+    val count: Int
+)
+
+
+@Serializable
+data class UsersSurveysDTO (
+    val userEmail: String,
+    val surveyId: Int,
 )
 
 @Serializable
