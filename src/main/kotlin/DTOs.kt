@@ -3,7 +3,7 @@ package com
 import kotlinx.serialization.Serializable
 
 @Serializable
-class UserDTO (
+data class UserDTO (
     val name: String,
     val email: String,
     val dob: String,
@@ -13,11 +13,16 @@ class UserDTO (
 )
 
 @Serializable
-class SurveyDTO (
+data class SurveyDTO (
     val title: String,
     val firstChoice: String,
     val secondChoice: String,
     val thirdChoice: String,
+)
+
+@Serializable
+data class TitleDTO (
+    val title: String
 )
 
 @Serializable

@@ -17,15 +17,27 @@ fun Application.configureUpdateUserRouting() {
 
             val rowsUpdated = transaction {
                 Users.update({ Users.email eq updateRequest.email }) {
-                    it[password] = updateRequest.password
+                    if (!checkIfEmpty(updateRequest.name)) {
+                        it[name] = updateRequest.name
+                    }
+                    if (!checkIfEmpty(updateRequest.dob)) {
+                        it[dob] = updateRequest.dob
+                    }
+                    if (!checkIfEmpty(updateRequest.city)) {
+                        it[city] = updateRequest.city
+                    }
                 }
             }
 
             if (rowsUpdated > 0) {
-                call.respond(TextDTO("Пароль изменён"))
+                call.respond(TextDTO("Information updated"))
             } else {
-                call.respond(TextDTO("Пользователь не найден"))
+                call.respond(TextDTO("User not found"))
             }
         }
     }
+}
+
+fun checkIfEmpty(value: String) : Boolean{
+    return value == ""
 }
