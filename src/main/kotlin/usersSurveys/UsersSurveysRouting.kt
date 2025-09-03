@@ -19,24 +19,23 @@ fun Application.configureUsersSurveysRouting() {
             val request = call.receive<UsersSurveysDTO>()
             val usersSurveysDTO = UsersSurveys.fetch(request.userEmail, request.surveyId)
             if (usersSurveysDTO != null) {
-                call.respond(HttpStatusCode.Conflict, "User already voted")
-            } else {
-                try {
-                    UsersSurveys.insert(
-                        UsersSurveysDTO (
-                            userEmail = request.userEmail,
-                            surveyId = request.surveyId,
-                            vote = request.vote,
-                        )
+                UsersSurveys.deleteUsersSurvey(request.userEmail, request.surveyId)
+            }
+            try {
+                UsersSurveys.insert(
+                    UsersSurveysDTO (
+                        userEmail = request.userEmail,
+                        surveyId = request.surveyId,
+                        vote = request.vote,
                     )
-                    call.respond(HttpStatusCode.OK)
-                } catch (e: ExposedSQLException) {
-                    e.printStackTrace()
-                    call.respond(HttpStatusCode.Conflict, "SQL error: ${e.localizedMessage}")
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    call.respond(HttpStatusCode.InternalServerError, "Unexpected error: ${e.localizedMessage}")
-                }
+                )
+                call.respond(HttpStatusCode.OK)
+            } catch (e: ExposedSQLException) {
+                e.printStackTrace()
+                call.respond(HttpStatusCode.Conflict, "SQL error: ${e.localizedMessage}")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                call.respond(HttpStatusCode.InternalServerError, "Unexpected error: ${e.localizedMessage}")
             }
         }
 

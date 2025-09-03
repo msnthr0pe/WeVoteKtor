@@ -1,8 +1,10 @@
 package com.usersSurveys
 
 import com.UsersSurveysDTO
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -42,6 +44,18 @@ object UsersSurveys : Table("users_surveys") {
         } catch (e: Exception) {
             e.printStackTrace()
             null
+        }
+    }
+
+    fun deleteUsersSurvey(userEmail: String, surveyId: Int): Boolean {
+        return try {
+            transaction {
+                UsersSurveys.deleteWhere { (UsersSurveys.userEmail eq userEmail) and
+                        (UsersSurveys.surveyId eq surveyId) }
+            }
+            true
+        } catch (_: Exception) {
+            false
         }
     }
 
