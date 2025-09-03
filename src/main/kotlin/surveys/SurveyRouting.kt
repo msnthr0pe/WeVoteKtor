@@ -23,6 +23,7 @@ fun Application.configureSurveyRouting() {
             val surveys = transaction {
                 Surveys.selectAll().map { row ->
                     SurveyDTO(
+                        id = row[Surveys.idSurvey],
                         title = row[Surveys.surveyTitle],
                         firstChoice = row[Surveys.firstChoice],
                         secondChoice = row[Surveys.secondChoice],

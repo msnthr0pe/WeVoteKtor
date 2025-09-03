@@ -26,6 +26,7 @@ fun Application.configureUsersSurveysRouting() {
                         UsersSurveysDTO (
                             userEmail = request.userEmail,
                             surveyId = request.surveyId,
+                            vote = request.vote,
                         )
                     )
                     call.respond(HttpStatusCode.OK)

@@ -10,12 +10,14 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object UsersSurveys : Table("users_surveys") {
     val userEmail = varchar("user_email",45)
     val surveyId = integer("survey_id")
+    val vote = integer("vote")
 
     fun insert(usersSurveysDTO: UsersSurveysDTO) {
         transaction {
             insert {
                 it[userEmail] = usersSurveysDTO.userEmail
                 it[surveyId] = usersSurveysDTO.surveyId
+                it[vote] = usersSurveysDTO.vote
             }
         }
     }
@@ -33,6 +35,7 @@ object UsersSurveys : Table("users_surveys") {
                         UsersSurveysDTO(
                             userEmail = row[UsersSurveys.userEmail],
                             surveyId = row[UsersSurveys.surveyId],
+                            vote = row[vote],
                         )
                     }
             }

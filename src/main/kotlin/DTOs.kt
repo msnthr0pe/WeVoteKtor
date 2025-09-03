@@ -14,6 +14,7 @@ data class UserDTO (
 
 @Serializable
 data class SurveyDTO (
+    val id: Int,
     val title: String,
     val firstChoice: String,
     val secondChoice: String,
@@ -57,6 +58,7 @@ data class UsersBySurveyResponse(
 data class UsersSurveysDTO (
     val userEmail: String,
     val surveyId: Int,
+    val vote: Int,
 )
 
 @Serializable

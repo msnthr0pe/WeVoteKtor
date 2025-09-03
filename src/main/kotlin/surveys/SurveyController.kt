@@ -27,6 +27,7 @@ class SurveyController(val call: ApplicationCall) {
             try {
                 Surveys.insertSurvey(
                     SurveyDTO(
+                        id = surveyReceiveRemote.id,
                         title = surveyReceiveRemote.title,
                         firstChoice = surveyReceiveRemote.firstChoice,
                         secondChoice = surveyReceiveRemote.secondChoice,
