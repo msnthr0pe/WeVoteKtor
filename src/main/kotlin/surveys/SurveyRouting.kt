@@ -6,7 +6,8 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun Application.configureSurveyRouting() {
@@ -19,9 +20,16 @@ fun Application.configureSurveyRouting() {
             val surveyController = SurveyController(call)
             surveyController.getSurvey()
         }
+        post("/archivesurvey") {
+            val surveyController = SurveyController(call)
+            surveyController.archiveSurvey()
+        }
         get("/getsurveys") {
             val surveys = transaction {
-                Surveys.selectAll().map { row ->
+                Surveys
+                    .select {Surveys.isArchived eq false}
+                    .orderBy(Surveys.idSurvey, SortOrder.DESC)   // <-- сортировка по убыванию
+                    .map { row ->
                     SurveyDTO(
                         id = row[Surveys.idSurvey],
                         title = row[Surveys.surveyTitle],

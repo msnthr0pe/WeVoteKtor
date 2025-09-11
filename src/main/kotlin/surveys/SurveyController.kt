@@ -69,4 +69,14 @@ class SurveyController(val call: ApplicationCall) {
             call.respondText("Server error", status = HttpStatusCode.InternalServerError)
         }
     }
+
+    suspend fun archiveSurvey() {
+        val request = call.receive<TitleDTO>()
+        val title = request.title
+        if (Surveys.archiveSurveyByTitle(title)) {
+            call.respond(HttpStatusCode.OK)
+        } else {
+            call.respondText("Survey doesn't exist", status = HttpStatusCode.Conflict)
+        }
+    }
 }

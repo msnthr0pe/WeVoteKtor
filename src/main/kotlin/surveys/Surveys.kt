@@ -7,13 +7,15 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 object Surveys : Table("surveys") {
     val idSurvey = integer("id")
-    val surveyTitle = varchar("title", 45)
+    val surveyTitle = varchar("title", 100)
     val firstChoice = varchar("first_choice", 45)
     val secondChoice = varchar("second_choice", 45)
     val thirdChoice = varchar("third_choice", 45)
+    val isArchived = bool("is_archived")
 
     fun insertSurvey(surveyDTO: SurveyDTO) {
         transaction {
@@ -47,6 +49,20 @@ object Surveys : Table("surveys") {
         } catch (e: Exception) {
             e.printStackTrace()
             null
+        }
+    }
+
+    fun archiveSurveyByTitle(title: String): Boolean {
+        return try {
+            transaction {
+                val updatedRows = Surveys.update({ surveyTitle eq title }) {
+                    it[isArchived] = true
+                }
+                updatedRows > 0
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
         }
     }
 }
