@@ -1,9 +1,11 @@
 package com.usersSurveys
 
+import com.SurveyVotesDTO
 import com.UsersSurveysDTO
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.count
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
@@ -40,6 +42,35 @@ object UsersSurveys : Table("users_surveys") {
                             vote = row[vote],
                         )
                     }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun fetchSurveyVotes(surveyId: Int): SurveyVotesDTO? {
+        return try {
+            transaction {
+                val votesMap = slice(vote, vote.count())
+                    .select { UsersSurveys.surveyId eq surveyId }
+                    .groupBy(vote)
+                    .associate { row ->
+                        val voteValue = row[vote]
+                        val count = row[vote.count()].toInt()
+                        voteValue to count
+                    }
+
+                val votesPercentage = mutableMapOf<Int, Int>()
+                val sum = votesMap.values.sum()
+                votesMap.forEach { key, value ->
+                    votesPercentage.put(key, value * 100 / sum)
+                }
+
+                SurveyVotesDTO(
+                    votes = votesMap,
+                    votesPercentage = votesPercentage,
+                )
             }
         } catch (e: Exception) {
             e.printStackTrace()

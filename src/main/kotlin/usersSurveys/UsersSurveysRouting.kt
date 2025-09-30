@@ -2,6 +2,7 @@ package com.usersSurveys
 
 import com.EmailRequest
 import com.SurveyIdRequest
+import com.SurveyVotesDTO
 import com.SurveysByUserResponse
 import com.UsersBySurveyResponse
 import com.UsersSurveysDTO
@@ -69,5 +70,17 @@ fun Application.configureUsersSurveysRouting() {
                 call.respond(HttpStatusCode.BadRequest, "Error: Invalid JSON format or survey ID missing")
             }
         }
+
+        post("getsurveyvotes") {
+            try {
+                val request = call.receive<SurveyIdRequest>()
+                val response = UsersSurveys.fetchSurveyVotes(request.id)
+
+                call.respond(SurveyVotesDTO(response?.votes ?: mapOf(), response?.votesPercentage ?: mapOf()))
+            } catch (_: Exception) {
+                call.respond(HttpStatusCode.BadRequest, "Error: Invalid JSON format or survey ID missing")
+            }
+        }
+
     }
 }

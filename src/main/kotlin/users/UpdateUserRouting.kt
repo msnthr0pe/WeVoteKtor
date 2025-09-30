@@ -26,6 +26,9 @@ fun Application.configureUpdateUserRouting() {
                     if (!checkIfEmpty(updateRequest.city)) {
                         it[city] = updateRequest.city
                     }
+                    if (!checkIfEmpty(updateRequest.password)) {
+                        it[password] = updateRequest.password
+                    }
                 }
             }
 

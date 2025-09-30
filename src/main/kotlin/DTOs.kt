@@ -36,6 +36,7 @@ data class SurveyDTOWithId (
 )
 @Serializable
 data class EmailRequest(val email: String)
+
 @Serializable
 data class SurveyIdRequest(val id: Int)
 
@@ -59,6 +60,12 @@ data class UsersSurveysDTO (
     val userEmail: String,
     val surveyId: Int,
     val vote: Int,
+)
+
+@Serializable
+data class SurveyVotesDTO (
+    val votes: Map<Int, Int>,
+    val votesPercentage: Map<Int, Int>
 )
 
 @Serializable
