@@ -28,7 +28,7 @@ fun Application.configureSurveyRouting() {
             val surveys = transaction {
                 Surveys
                     .select {Surveys.isArchived eq false}
-                    .orderBy(Surveys.idSurvey, SortOrder.DESC)   // <-- сортировка по убыванию
+                    .orderBy(Surveys.idSurvey, SortOrder.DESC)
                     .map { row ->
                     SurveyDTO(
                         id = row[Surveys.idSurvey],
@@ -38,6 +38,23 @@ fun Application.configureSurveyRouting() {
                         thirdChoice = row[Surveys.thirdChoice],
                     )
                 }
+            }
+            call.respond(surveys)
+        }
+        get("/getarchivedsurveys") {
+            val surveys = transaction {
+                Surveys
+                    .select {Surveys.isArchived eq true}
+                    .orderBy(Surveys.idSurvey, SortOrder.DESC)
+                    .map { row ->
+                        SurveyDTO(
+                            id = row[Surveys.idSurvey],
+                            title = row[Surveys.surveyTitle],
+                            firstChoice = row[Surveys.firstChoice],
+                            secondChoice = row[Surveys.secondChoice],
+                            thirdChoice = row[Surveys.thirdChoice],
+                        )
+                    }
             }
             call.respond(surveys)
         }
