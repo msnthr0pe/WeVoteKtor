@@ -2,7 +2,9 @@ package com.surveys
 
 import com.SurveyDTO
 import com.SurveyDTOWithId
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
@@ -59,6 +61,18 @@ object Surveys : Table("surveys") {
                     it[isArchived] = true
                 }
                 updatedRows > 0
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    fun deleteSurveyById(id: Int): Boolean {
+        return try {
+            transaction {
+                val deletedRows = Surveys.deleteWhere { idSurvey eq id }
+                deletedRows > 0
             }
         } catch (e: Exception) {
             e.printStackTrace()

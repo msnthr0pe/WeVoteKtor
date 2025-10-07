@@ -103,4 +103,16 @@ object UsersSurveys : Table("users_surveys") {
                 .map { it[userEmail] }
         }
     }
+
+    fun deleteSurveyInfo(id: Int): Boolean {
+        return try {
+            transaction {
+                val deletedRows = UsersSurveys.deleteWhere { surveyId eq id }
+                deletedRows > 0
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
 }
