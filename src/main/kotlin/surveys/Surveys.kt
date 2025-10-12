@@ -6,6 +6,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.max
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -21,8 +22,11 @@ object Surveys : Table("surveys") {
 
     fun insertSurvey(surveyDTO: SurveyDTO) {
         transaction {
+            val maxId = slice(idSurvey.max())
+                .selectAll()
+                .singleOrNull()?.getOrNull(idSurvey.max()) ?: 0
             insert {
-                it[idSurvey] = (Surveys.selectAll().count() + 1).toInt()
+                it[idSurvey] = (maxId + 1)
                 it[surveyTitle] = surveyDTO.title
                 it[firstChoice] = surveyDTO.firstChoice
                 it[secondChoice] = surveyDTO.secondChoice
