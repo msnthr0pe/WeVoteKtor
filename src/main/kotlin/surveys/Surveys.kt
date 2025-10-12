@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.update
 
 object Surveys : Table("surveys") {
     val idSurvey = integer("id")
-    val surveyTitle = varchar("title", 100)
+    val surveyTitle = varchar("title", 1000)
     val firstChoice = varchar("first_choice", 45)
     val secondChoice = varchar("second_choice", 45)
     val thirdChoice = varchar("third_choice", 45)
