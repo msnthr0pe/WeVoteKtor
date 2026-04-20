@@ -78,3 +78,23 @@ data class CredentialsDTO(
 data class TextDTO(
     val text: String,
 )
+
+@Serializable
+data class ApplicationDTO(
+    val id: Int = 0,
+    val title: String,
+    val firstChoice: String,
+    val secondChoice: String,
+    val thirdChoice: String,
+    val status: String = "PENDING",
+    val userEmail: String
+)
+
+@Serializable
+data class EmailDTO(val email: String)
+
+@Serializable
+data class ApplicationStatusUpdateDTO(
+    val id: Int,
+    val status: String
+)

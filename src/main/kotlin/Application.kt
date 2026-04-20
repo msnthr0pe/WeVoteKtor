@@ -1,5 +1,6 @@
 package com
 
+import com.applications.configureApplicationRouting
 import com.users.configureGetUserRouting
 import com.users.configureUpdateUserRouting
 import com.login.configureLoginRouting
@@ -17,10 +18,10 @@ fun main() {
 }
 
 fun Application.module() {
-    Database.connect("jdbc:postgresql://localhost:5432/voting",
+    Database.connect("jdbc:postgresql://localhost:5432/we_vote_db",
         "org.postgresql.Driver",
         "postgres",
-        "root")
+        "serkanbolat")
 
     configureRegisterRouting()
     configureLoginRouting()
@@ -30,6 +31,8 @@ fun Application.module() {
     configureSurveyRouting()
 
     configureUsersSurveysRouting()
+
+    configureApplicationRouting()
 
     configureSerialization()
 }
