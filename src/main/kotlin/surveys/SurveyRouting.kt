@@ -68,21 +68,24 @@ fun Application.configureSurveyRouting() {
             }
             call.respond(surveys)
         }
-        get("/getarchivedsurveys") {
+        post("/getarchivedsurveys") {
+            val dto = call.receive<CityDto>()
             val surveys = transaction {
-                Surveys
-                    .select { Surveys.isArchived eq true }
-                    .orderBy(Surveys.idSurvey, SortOrder.DESC)
-                    .map { row ->
-                        SurveyDTO(
-                            id = row[Surveys.idSurvey],
-                            title = row[Surveys.surveyTitle],
-                            firstChoice = row[Surveys.firstChoice],
-                            secondChoice = row[Surveys.secondChoice],
-                            thirdChoice = row[Surveys.thirdChoice],
-                            city = row[Surveys.city],
-                        )
-                    }
+                val query = if (dto.name.isBlank()) {
+                    Surveys.select { Surveys.isArchived eq true }
+                } else {
+                    Surveys.select { (Surveys.isArchived eq true) and (Surveys.city eq dto.name) }
+                }
+                query.orderBy(Surveys.idSurvey, SortOrder.DESC).map { row ->
+                    SurveyDTO(
+                        id = row[Surveys.idSurvey],
+                        title = row[Surveys.surveyTitle],
+                        firstChoice = row[Surveys.firstChoice],
+                        secondChoice = row[Surveys.secondChoice],
+                        thirdChoice = row[Surveys.thirdChoice],
+                        city = row[Surveys.city],
+                    )
+                }
             }
             call.respond(surveys)
         }
