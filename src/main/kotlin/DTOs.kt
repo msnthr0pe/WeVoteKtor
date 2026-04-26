@@ -19,6 +19,7 @@ data class SurveyDTO (
     val firstChoice: String,
     val secondChoice: String,
     val thirdChoice: String,
+    val city: String,
 )
 
 @Serializable
@@ -33,6 +34,12 @@ data class SurveyDTOWithId (
     val firstChoice: String,
     val secondChoice: String,
     val thirdChoice: String,
+    val city: String,
+)
+
+@Serializable
+data class CityDto(
+    val name: String,
 )
 @Serializable
 data class EmailRequest(val email: String)
@@ -87,7 +94,8 @@ data class ApplicationDTO(
     val secondChoice: String,
     val thirdChoice: String,
     val status: String = "PENDING",
-    val userEmail: String
+    val userEmail: String,
+    val userCity: String = "",
 )
 
 @Serializable

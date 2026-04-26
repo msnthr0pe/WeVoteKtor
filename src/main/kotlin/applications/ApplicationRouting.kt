@@ -4,18 +4,28 @@ import com.ApplicationDTO
 import com.ApplicationIdRequest
 import com.ApplicationStatusUpdateDTO
 import com.EmailDTO
+import com.users.Users
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
-import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 
 fun Application.configureApplicationRouting() {
     routing {
-        get("/getapplications") {
-            val applications = Applications.fetchAllApplications()
+        post("/getapplications") {
+            val request = call.receive<EmailDTO>()
+            val user = Users.fetchUser(request.email)
+            if (user == null) {
+                call.respond(HttpStatusCode.BadRequest, "User not found")
+                return@post
+            }
+            val applications = if (user.access == "developer") {
+                Applications.fetchAllApplications()
+            } else {
+                Applications.fetchApplicationsByCity(user.city)
+            }
             call.respond(applications)
         }
 

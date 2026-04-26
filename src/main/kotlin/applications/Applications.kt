@@ -19,6 +19,7 @@ object Applications : Table("applications") {
     val thirdChoice = varchar("third_choice", 255)
     val appStatus = varchar("status", 45)
     val appUserEmail = varchar("user_email", 255)
+    val appUserCity = varchar("user_city", 100)
 
     fun insertApplication(dto: ApplicationDTO) {
         transaction {
@@ -31,6 +32,7 @@ object Applications : Table("applications") {
                 it[thirdChoice] = dto.thirdChoice
                 it[appStatus] = "PENDING"
                 it[appUserEmail] = dto.userEmail
+                it[appUserCity] = dto.userCity
             }
         }
     }
@@ -45,7 +47,25 @@ object Applications : Table("applications") {
                     secondChoice = row[secondChoice],
                     thirdChoice = row[thirdChoice],
                     status = row[appStatus],
-                    userEmail = row[appUserEmail]
+                    userEmail = row[appUserEmail],
+                    userCity = row[appUserCity],
+                )
+            }
+        }
+    }
+
+    fun fetchApplicationsByCity(city: String): List<ApplicationDTO> {
+        return transaction {
+            select { appUserCity eq city }.map { row ->
+                ApplicationDTO(
+                    id = row[appId],
+                    title = row[appTitle],
+                    firstChoice = row[firstChoice],
+                    secondChoice = row[secondChoice],
+                    thirdChoice = row[thirdChoice],
+                    status = row[appStatus],
+                    userEmail = row[appUserEmail],
+                    userCity = row[appUserCity],
                 )
             }
         }
@@ -61,7 +81,8 @@ object Applications : Table("applications") {
                     secondChoice = row[secondChoice],
                     thirdChoice = row[thirdChoice],
                     status = row[appStatus],
-                    userEmail = row[appUserEmail]
+                    userEmail = row[appUserEmail],
+                    userCity = row[appUserCity],
                 )
             }
         }

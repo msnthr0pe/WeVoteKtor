@@ -3,6 +3,7 @@ package com.surveys
 import com.SurveyDTO
 import com.SurveyDTOWithId
 import com.TitleDTO
+import com.surveys.Surveys.city
 import com.surveys.Surveys.firstChoice
 import com.surveys.Surveys.idSurvey
 import com.surveys.Surveys.secondChoice
@@ -32,6 +33,7 @@ class SurveyController(val call: ApplicationCall) {
                         firstChoice = surveyReceiveRemote.firstChoice,
                         secondChoice = surveyReceiveRemote.secondChoice,
                         thirdChoice = surveyReceiveRemote.thirdChoice,
+                        city = surveyReceiveRemote.city,
                     )
                 )
                 call.respond(HttpStatusCode.OK)
@@ -60,6 +62,7 @@ class SurveyController(val call: ApplicationCall) {
                             firstChoice = row[firstChoice],
                             secondChoice = row[secondChoice],
                             thirdChoice = row[thirdChoice],
+                            city = row[city],
                         )
                     }
             }

@@ -19,6 +19,7 @@ object Surveys : Table("surveys") {
     val secondChoice = varchar("second_choice", 45)
     val thirdChoice = varchar("third_choice", 45)
     val isArchived = bool("is_archived")
+    val city = varchar("city", 100)
 
     fun insertSurvey(surveyDTO: SurveyDTO) {
         transaction {
@@ -31,6 +32,7 @@ object Surveys : Table("surveys") {
                 it[firstChoice] = surveyDTO.firstChoice
                 it[secondChoice] = surveyDTO.secondChoice
                 it[thirdChoice] = surveyDTO.thirdChoice
+                it[city] = surveyDTO.city
             }
         }
     }
@@ -48,6 +50,7 @@ object Surveys : Table("surveys") {
                             firstChoice = row[firstChoice],
                             secondChoice = row[secondChoice],
                             thirdChoice = row[thirdChoice],
+                            city = row[city],
                         )
                     }
             }
