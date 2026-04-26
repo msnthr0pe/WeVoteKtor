@@ -98,3 +98,6 @@ data class ApplicationStatusUpdateDTO(
     val id: Int,
     val status: String
 )
+
+@Serializable
+data class ApplicationIdRequest(val id: Int)

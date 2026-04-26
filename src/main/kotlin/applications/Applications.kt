@@ -2,6 +2,7 @@ package com.applications
 
 import com.ApplicationDTO
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.max
 import org.jetbrains.exposed.sql.select
@@ -69,6 +70,12 @@ object Applications : Table("applications") {
     fun applicationExists(id: Int): Boolean {
         return transaction {
             select { appId eq id }.count() > 0
+        }
+    }
+
+    fun deleteApplication(id: Int): Boolean {
+        return transaction {
+            deleteWhere { appId eq id } > 0
         }
     }
 
